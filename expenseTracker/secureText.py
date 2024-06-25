@@ -93,7 +93,7 @@ if __name__ == '__main__':
                         secureText._verifyCipherText(cipherText)
                         exitFlag = True
                 except Exception as exc:
-                    print("\n\n", exc)
+                    print('\n\n', exc)
                     exitFlag = False
                     print('\nCIPHER TEXT is INVALID! Make sure you have added a valid CIPHER TEXT inside the \'cipherText.txt\' file!')
             case 'r':
