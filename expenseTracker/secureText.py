@@ -8,11 +8,21 @@ load_dotenv()
 
 
 class SecureText:
+    ''' This is used to secure confidential data '''
+    _ref = None
+
     def __init__(self) -> None:
+        SecureText._ref = self
         self.__SECRET_KEY = str(os.getenv('SECRET_KEY'))
         self.__ENDE_KEY_LEN = int(os.getenv('ENCRYPT_KEY_LEN'))
-        self.__keyStore = privateKeyStore(self.__ENDE_KEY_LEN)
+        self.__keyStore = PrivateKeyStore(self.__ENDE_KEY_LEN)
     
+    @classmethod
+    def initialize(cls):
+        if cls._ref is None:
+            cls._ref == cls()
+        return cls._ref
+
     def _encryptText(self, text) -> str:
         encryptedText = ''
         for char in text:
@@ -45,7 +55,7 @@ class SecureText:
         self.__keyStore._generateCipherDStore()
 
 
-class privateKeyStore:
+class PrivateKeyStore:
     def __init__(self, CIPHER_KEY) -> None:
         self.__CIPHER_ESTORE = {}
         self.__CIPHER_DSTORE = {}
@@ -67,14 +77,18 @@ class privateKeyStore:
     def _generateCipherEStore(self) -> dict:
         for char in string.ascii_letters + string.digits + string.punctuation + string.whitespace:
             self.__CIPHER_ESTORE[char] = self.__generateSecureText()
-
+    
     def __generateSecureText(self) -> str:
         return ''.join(random.choices(string.ascii_letters + string.digits + string.hexdigits + string.octdigits, k=self.__ENDE_KEY_LEN))
 
 
+# initialize secure text
+SecureText.initialize()
+
+
+# main function
 if __name__ == '__main__':
     print('\nWelcome to Secure Text Program!')
-    secureText = SecureText()
     exitFlag = False
     while(not exitFlag):
         userOption = input('\n\nDo you already have a CIPHER TEXT ? \n\ta. Press \'c\' to continue with the default CIPHER TEXT \n\tb. Press \'y\' if you already have a CIPHER TEXT \n\tc. Press \'g\' to generate a CIPHER TEXT  \n\td. Press \'r\' to report a BUG \n\nYou have chosen: ')
@@ -83,14 +97,14 @@ if __name__ == '__main__':
                 print('\nPlease add the CIPHER TEXT into the \'cipherText.txt\' file! then start the program!\n')
                 exit()
             case 'g':
-                secureText._generateCipherText()
+                SecureText._ref._generateCipherText()
                 print('\nYour CIPHER TEXT has been generated successfully! and added into the \'cipherText.txt\' file!')
                 exitFlag = True
             case 'c':
                 try:
                     with open('cipherText.txt', 'r') as file:
                         cipherText = str(file.read()).strip()
-                        secureText._verifyCipherText(cipherText)
+                        SecureText._ref._verifyCipherText(cipherText)
                         exitFlag = True
                 except Exception as exc:
                     print('\n\n', exc)
@@ -107,11 +121,11 @@ if __name__ == '__main__':
         match userOption:
             case 'e':
                 text = input('\nPlease enter your text : ')
-                print('\nYour ENCRYPTED TEXT text is: ', secureText._encryptText(text), '\n')
+                print('\nYour ENCRYPTED TEXT text is: ', SecureText._ref._encryptText(text), '\n')
             case 'd':
                 try:
                     _encryptedText = input('\nPlease enter your ENCRYPTED TEXT : ')
-                    print('\nYour DECRYPTED TEXT is: ', secureText._decryptText(_encryptedText))
+                    print('\nYour DECRYPTED TEXT is: ', SecureText._ref._decryptText(_encryptedText))
                 except Exception as exc:
                     print('\nENCRYPTED TEXT is INVALID! Make sure you are using the same CIPHER TEXT which you used at the time of ENCRYPTION!')
             case 'q':
