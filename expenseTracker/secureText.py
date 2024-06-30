@@ -81,10 +81,8 @@ class PrivateKeyStore:
     def __generateSecureText(self) -> str:
         return ''.join(random.choices(string.ascii_letters + string.digits + string.hexdigits + string.octdigits, k=self.__ENDE_KEY_LEN))
 
-
 # initialize secure text
 SecureText.initialize()
-
 
 # main function
 if __name__ == '__main__':
@@ -134,3 +132,4 @@ if __name__ == '__main__':
             case _:
                 print('\nPlease choose a valid option next time!')
         exitFlag = False if input('\nDo you want to continue to the program ? \n\ta. Press \'c\' to continue! \n\tb. Press \'any other key\' to quit the program!  \n\nYou have chosen: ') == 'c' else True
+

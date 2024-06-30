@@ -40,3 +40,4 @@ class Logger:
 
 # initialize logger
 Logger.initialize()
+
