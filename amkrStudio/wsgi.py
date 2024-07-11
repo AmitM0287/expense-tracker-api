@@ -1,5 +1,5 @@
 '''
-WSGI config for expenseTracker project.
+WSGI config for amkrStudio project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -10,6 +10,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'expenseTracker.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'amkrStudio.settings')
 
 application = get_wsgi_application()

@@ -4,25 +4,31 @@ import jwt
 import base64
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
 class SecureText:
     ''' This is used to secure confidential data '''
     _ref = None
-
+    # PROJECT_MODE shoule be enabled to use CIPHER_TEXT in the project
+    PROJECT_MODE = os.getenv('PROJECT_MODE')
+    
     def __init__(self) -> None:
         SecureText._ref = self
         self.__SECRET_KEY = str(os.getenv('SECRET_KEY'))
         self.__ENDE_KEY_LEN = int(os.getenv('ENCRYPT_KEY_LEN'))
         self.__keyStore = PrivateKeyStore(self.__ENDE_KEY_LEN)
+        # Veirify the CIPHER_TEXT if PROJECT_MODE is enabled
+        if SecureText.PROJECT_MODE and int(SecureText.PROJECT_MODE):
+            self._verifyCipherText(os.getenv('CIPHER_TEXT'))
     
     @classmethod
     def initialize(cls):
         if cls._ref is None:
             cls._ref == cls()
         return cls._ref
-
+    
     def _encryptText(self, text) -> str:
         encryptedText = ''
         for char in text:
@@ -39,7 +45,7 @@ class SecureText:
             val = self.__keyStore._getCipherDStore().get(st)
             decryptedText += st if val is None else val
         return decryptedText
-
+    
     def _generateCipherText(self) -> str:
         self.__keyStore._generateCipherEStore()
         self.__keyStore._generateCipherDStore()
@@ -60,10 +66,10 @@ class PrivateKeyStore:
         self.__CIPHER_ESTORE = {}
         self.__CIPHER_DSTORE = {}
         self.__ENDE_KEY_LEN = CIPHER_KEY
-
+    
     def _getCipherEStore(self) -> dict:
         return self.__CIPHER_ESTORE
-
+    
     def _getCipherDStore(self) -> dict:
         return self.__CIPHER_DSTORE
     
@@ -73,7 +79,7 @@ class PrivateKeyStore:
     def _generateCipherDStore(self) -> dict:
         for k, v in self.__CIPHER_ESTORE.items():
             self.__CIPHER_DSTORE[v] = k
-
+    
     def _generateCipherEStore(self) -> dict:
         for char in string.ascii_letters + string.digits + string.punctuation + string.whitespace:
             self.__CIPHER_ESTORE[char] = self.__generateSecureText()

@@ -20,7 +20,7 @@ class Logger:
     def __initializeLoggerConf(self):
         # configure log rotation and logging format
         formatter = logging.Formatter(os.getenv('LOGGER_FORMAT'), datefmt=os.getenv('DATE_FORMAT'))
-        handler = RotatingFileHandler(filename='expenseTracker.log', maxBytes=int(os.getenv('MAX_BYTES')), backupCount=int(os.getenv('BACKUP_COUNT')))
+        handler = RotatingFileHandler(filename='amkrStudio.log', maxBytes=int(os.getenv('MAX_BYTES')), backupCount=int(os.getenv('BACKUP_COUNT')))
         handler.setFormatter(formatter)
         # configure logger to use the rotating file handler
         logger = logging.getLogger(__name__)

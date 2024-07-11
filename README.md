@@ -1,4 +1,4 @@
-# Expense Tracker Applictaion
+# amkr-studio Applictaion
     - This helps you to keep track your day to day expences
     - This helps you to build good savings habits for your future
     - Unnecessary spends can be avoided

@@ -1,30 +1,47 @@
 from datetime import datetime
-from expenseTracker.logger import Logger
-from expenseTracker.connections import Connections
-from expenseTracker.secureText import SecureText
-from expenseTracker.models import AuthUser
+from amkrStudio.logger import Logger
+from amkrStudio.connectors import Connections
+from amkrStudio.secureText import SecureText
+from amkrStudio.models import AuthUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 
 
 class UserLogin(TokenObtainPairView):
-    ''' This is used to authenticate user '''
-    def post(self, request):
+    def post(self, request, format=None):
+        ''' This API is used to authenticate user '''
         API_PROCESSING_TIME = datetime.now()
         API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
         API_MESSAGE = 'Something went wrong! Please try after sometime!'
         DATA = {}
         try:
-            # process the user authentication
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            # Manipulatig request object
+            _mutable = request.POST._mutable
+            request.POST._mutable = True
+            request.POST['username'] = SecureText._ref._encryptText(username)
+            request.POST['password'] = password
+            request.POST._mutable = _mutable
+            # user authentication
+            print(request.POST, "<<<")
             res = super().post(request)
             DATA = res.data
             if 'access' in DATA and 'refresh' in DATA:
                 API_STATUS = status.HTTP_200_OK
                 API_MESSAGE = 'User authentication successful!'
+        except TypeError as exc:
+            Logger._ref._logError(exc)
+            API_STATUS = status.HTTP_400_BAD_REQUEST
+            API_MESSAGE = str(exc)
+        except ValidationError as exc:
+            Logger._ref._logError(exc)
+            API_STATUS = status.HTTP_400_BAD_REQUEST
+            API_MESSAGE = str(exc)
         except AuthenticationFailed as exc:
             Logger._ref._logException(exc)
             API_STATUS = status.HTTP_401_UNAUTHORIZED
@@ -43,32 +60,48 @@ class UserLogin(TokenObtainPairView):
         }, status=API_STATUS)
 
 
-class UserRegister(APIView):
-    ''' This is used to register a new user '''
-    def post(self, request):
+class RegisterUser(APIView):
+    ''' This API is used to register a new user '''
+    def post(self, request, format=None):
         API_PROCESSING_TIME = datetime.now()
         API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
         API_MESSAGE = 'Something went wrong! Please try after sometime!'
         DATA = {}
         try:
+            firstName = request.POST.get('firstName')
+            lastName = request.POST.get('lastName')
+            username = request.POST.get('username')
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            userId = request.POST.get('userId', 1)
             # get postgres conn
             session = Connections.getPostgresConnection()
             # new user data
             userData = AuthUser(
-                first_name = 'yyy',
-                last_name = 'yyy',
-                email = SecureText._ref._encryptText('yyy@yyy.yy'),
-                username = SecureText._ref._encryptText('yyy@yyy.yy'),
-                password = make_password('yyyyy@yyyyy'),
-                created_by = 1
+                first_name = firstName,
+                last_name = lastName,
+                email = SecureText._ref._encryptText(email),
+                username = SecureText._ref._encryptText(username),
+                password = make_password(password),
+                created_by = userId
             )
             # Save the user data in the database
             session.add(userData)
             session.commit()
-            session.close()
             # update respone
             API_STATUS = status.HTTP_201_CREATED
             API_MESSAGE = 'User registration successful!'
+            DATA = { 'userId': userData.id }
+            # close session
+            session.close()
+        except TypeError as exc:
+            Logger._ref._logError(exc)
+            API_STATUS = status.HTTP_400_BAD_REQUEST
+            API_MESSAGE = str(exc)
+        except ValidationError as exc:
+            Logger._ref._logError(exc)
+            API_STATUS = status.HTTP_400_BAD_REQUEST
+            API_MESSAGE = str(exc)
         except Exception as exc:
             Logger._ref._logError(exc)
          # calculate the processing time in milliseconds
@@ -83,8 +116,9 @@ class UserRegister(APIView):
         }, status=API_STATUS)
 
 
-class UpdateUser(APIView):
-    def get(self, request):
+class UpdateUserDetails(APIView):
+    def post(self, request, format=None):
+        ''' This API is used to update user details [post login] '''
         API_PROCESSING_TIME = datetime.now()
         API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
         API_MESSAGE = 'Something went wrong! Please try after sometime!'
@@ -108,7 +142,8 @@ class UpdateUser(APIView):
 
 
 class ForgotPassword(APIView):
-    def post(self, request):
+    def post(self, request, format=None):
+        ''' This API is used to update user details [reset login pass] '''
         API_PROCESSING_TIME = datetime.now()
         API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
         API_MESSAGE = 'Something went wrong! Please try after sometime!'
@@ -132,7 +167,8 @@ class ForgotPassword(APIView):
 
 
 class DeleteUser(APIView):
-    def post(self, request):
+    def post(self, request, format=None):
+        ''' This API is used to delete user account '''
         API_PROCESSING_TIME = datetime.now()
         API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
         API_MESSAGE = 'Something went wrong! Please try after sometime!'
