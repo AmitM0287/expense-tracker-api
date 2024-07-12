@@ -121,8 +121,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# SIMPLE_JWT
-# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
+# AUTHENTICATION_CLASSES
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+# SIMPLE_JWT - https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=int(os.getenv('ACCESS_TOKEN_LIFETIME_HOURS'))),
     'REFRESH_TOKEN_LIFETIME': timedelta(hours=int(os.getenv('REFRESH_TOKEN_LIFETIME_HOURS'))),

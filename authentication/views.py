@@ -28,7 +28,6 @@ class UserLogin(TokenObtainPairView):
             request.POST['password'] = password
             request.POST._mutable = _mutable
             # user authentication
-            print(request.POST, "<<<")
             res = super().post(request)
             DATA = res.data
             if 'access' in DATA and 'refresh' in DATA:
