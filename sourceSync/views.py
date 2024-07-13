@@ -8,21 +8,31 @@ from rest_framework.response import Response
 from rest_framework import status
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from dotenv import load_dotenv
+
+# Load env
+load_dotenv()
 
 
 class SyncGoogleSheet(APIView):
 	def post(self, request, format=None):
 		''' This API is used to synced data with google sheets '''
 		API_PROCESSING_TIME = time.time()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			# The id and range of the spreadsheet
 			spreadsheetId = request.POST.get('spreadsheetId')
 			spreadsheetRange = request.POST.get('spreadsheetRange')
+			# Path to the service account key file
+			SERVICE_ACCOUNT_FILE = os.getenv('SERVICE_ACCOUNT_FILE')
+			SCOPES = os.getenv('SCOPES').split(',')
 			# Load the Google Sheets API credentials
-			credentials = service_account.Credentials.from_service_account_file(os.getenv('SERVICE_ACCOUNT_FILE'), scopes=(os.getenv('SCOPES')))
+			credentials = service_account.Credentials.from_service_account_file(
+				filename = SERVICE_ACCOUNT_FILE, 
+				scopes	 = SCOPES
+			)
 			# Build the service
 			service = build('sheets', 'v4', credentials=credentials)
 			# Call the Sheets API
@@ -34,6 +44,8 @@ class SyncGoogleSheet(APIView):
 			DATA = result.get('values', [])
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# Calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((time.time() - API_PROCESSING_TIME) * 1000)
 		# Log the processing time, message, and status

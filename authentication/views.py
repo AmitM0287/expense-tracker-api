@@ -19,8 +19,8 @@ class UserLogin(TokenObtainPairView):
 	def post(self, request, format=None):
 		''' This API is used to authenticate user '''
 		API_PROCESSING_TIME = datetime.now()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			username = request.POST.get('username')
@@ -57,6 +57,8 @@ class UserLogin(TokenObtainPairView):
 			API_MESSAGE = str(exc)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((datetime.now() - API_PROCESSING_TIME).total_seconds() * 1000)
 		# log the processing time, message, and status
@@ -73,8 +75,8 @@ class RegisterUser(APIView):
 	''' This API is used to register a new user '''
 	def post(self, request, format=None):
 		API_PROCESSING_TIME = datetime.now()
-		API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			firstName = request.POST.get('firstName')
@@ -119,6 +121,8 @@ class RegisterUser(APIView):
 			API_MESSAGE = str(exc)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		 # calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((datetime.now() - API_PROCESSING_TIME).total_seconds() * 1000)
 		# log the processing time, message, and status
@@ -135,8 +139,8 @@ class UpdateUserDetails(APIView):
 	def post(self, request, format=None):
 		''' This API is used to update user details [post login] '''
 		API_PROCESSING_TIME = datetime.now()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			API_STATUS  = status.HTTP_200_OK
@@ -144,6 +148,8 @@ class UpdateUserDetails(APIView):
 			DATA = dict(request.data)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((datetime.now() - API_PROCESSING_TIME).total_seconds() * 1000)
 		# log the processing time, message, and status
@@ -160,8 +166,8 @@ class ForgotPassword(APIView):
 	def post(self, request, format=None):
 		''' This API is used to update user details [reset login pass] '''
 		API_PROCESSING_TIME = datetime.now()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			API_STATUS  = status.HTTP_200_OK
@@ -169,6 +175,8 @@ class ForgotPassword(APIView):
 			DATA = dict(request.data)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((datetime.now() - API_PROCESSING_TIME).total_seconds() * 1000)
 		# log the processing time, message, and status
@@ -185,8 +193,8 @@ class DeleteUser(APIView):
 	def post(self, request, format=None):
 		''' This API is used to delete user account '''
 		API_PROCESSING_TIME = datetime.now()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			API_STATUS  = status.HTTP_200_OK
@@ -194,6 +202,8 @@ class DeleteUser(APIView):
 			DATA = dict(request.data)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((datetime.now() - API_PROCESSING_TIME).total_seconds() * 1000)
 		# log the processing time, message, and status

@@ -11,8 +11,8 @@ class UserInvestments(APIView):
 	''' This API is used to fetch Investments details '''
 	def get(self, request, format=None):
 		API_PROCESSING_TIME = time.time()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			API_STATUS  = status.HTTP_200_OK
@@ -20,6 +20,8 @@ class UserInvestments(APIView):
 			DATA = dict(request.data)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((time.time() - API_PROCESSING_TIME) * 1000)
 		# log the processing time, message, and status
@@ -36,8 +38,8 @@ class UserSavings(APIView):
 	''' This API is used to fetch savings details '''
 	def get(self, request, format=None):
 		API_PROCESSING_TIME = time.time()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			API_STATUS  = status.HTTP_200_OK
@@ -45,6 +47,8 @@ class UserSavings(APIView):
 			DATA = dict(request.data)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((time.time() - API_PROCESSING_TIME) * 1000)
 		# log the processing time, message, and status
@@ -61,8 +65,8 @@ class UserExpences(APIView):
 	''' This API is used to fetch expenses details '''
 	def get(self, request, format=None):
 		API_PROCESSING_TIME = time.time()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			API_STATUS  = status.HTTP_200_OK
@@ -70,6 +74,8 @@ class UserExpences(APIView):
 			DATA = dict(request.data)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((time.time() - API_PROCESSING_TIME) * 1000)
 		# log the processing time, message, and status
@@ -86,8 +92,8 @@ class DownloadExcel(APIView):
 	''' This API is used to download finance data '''
 	def post(self, request, format=None):
 		API_PROCESSING_TIME = time.time()
-		API_STATUS  = status.HTTP_500_INTERNAL_SERVER_ERROR
-		API_MESSAGE = 'Something went wrong! Please try after sometime!'
+		API_STATUS  = None
+		API_MESSAGE = ''
 		DATA = {}
 		try:
 			API_STATUS  = status.HTTP_200_OK
@@ -95,6 +101,8 @@ class DownloadExcel(APIView):
 			DATA = dict(request.data)
 		except Exception as exc:
 			Logger._ref._logError(exc)
+			API_MESSAGE = str(exc)
+			API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
 		# calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((time.time() - API_PROCESSING_TIME) * 1000)
 		# log the processing time, message, and status
