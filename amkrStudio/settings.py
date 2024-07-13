@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 	'authentication',
 	'finance',
+    'sourceSync',
 	'rest_framework',
 	'rest_framework_simplejwt',
 ]

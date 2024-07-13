@@ -1,5 +1,6 @@
-from django.urls import path
 from finance import views
+
+from django.urls import path
 
 urlpatterns = [
 	path('userInvestments/', views.UserInvestments.as_view(), name='userInvestments'),

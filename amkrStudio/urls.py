@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
 	path('authentication/', include('authentication.urls')),
 	path('finance/', include('finance.urls')),
+	path('sourceSync/', include('sourceSync.urls')),
 ]
