@@ -1,10 +1,13 @@
 import time
+import os
 
 from utils.logger import Logger
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
 
 
 class SyncGoogleSheet(APIView):
@@ -15,15 +18,27 @@ class SyncGoogleSheet(APIView):
 		API_MESSAGE = 'Something went wrong! Please try after sometime!'
 		DATA = {}
 		try:
+			# The id and range of the spreadsheet
+			spreadsheetId = request.POST.get('spreadsheetId')
+			spreadsheetRange = request.POST.get('spreadsheetRange')
+			# Load the Google Sheets API credentials
+			credentials = service_account.Credentials.from_service_account_file(os.getenv('SERVICE_ACCOUNT_FILE'), scopes=(os.getenv('SCOPES')))
+			# Build the service
+			service = build('sheets', 'v4', credentials=credentials)
+			# Call the Sheets API
+			sheet = service.spreadsheets()
+			result = sheet.values().get(spreadsheetId=spreadsheetId, range=spreadsheetRange).execute()
+			# Update response
 			API_STATUS  = status.HTTP_200_OK
 			API_MESSAGE = 'Synced with google sheet successfully!'
-			DATA = dict(request.data)
+			DATA = result.get('values', [])
 		except Exception as exc:
 			Logger._ref._logError(exc)
-		# calculate the processing time in milliseconds
+		# Calculate the processing time in milliseconds
 		API_PROCESSING_TIME = int((time.time() - API_PROCESSING_TIME) * 1000)
-		# log the processing time, message, and status
+		# Log the processing time, message, and status
 		Logger._ref._logInfo(API_PROCESSING_TIME, API_MESSAGE, API_STATUS)
+		# Return response
 		return Response({
 			'processingTime': API_PROCESSING_TIME,
 			'status' : API_STATUS,
