@@ -11,3 +11,4 @@ google-auth-oauthlib==1.2.1
 google-auth-httplib2==0.2.0
 google-api-python-client==2.137.0
 pandas==2.2.2
+XlsxWriter==3.2.0
