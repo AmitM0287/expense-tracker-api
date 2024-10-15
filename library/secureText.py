@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 class SecureText:
 	''' This is used to secure confidential data '''
 	_ref = None
@@ -59,7 +58,6 @@ class SecureText:
 		cipherEstore = jwt.decode(dataString, self.__SECRET_KEY, algorithms=['HS256'])
 		self.__keyStore._setCipherEStote(cipherEstore)
 		self.__keyStore._generateCipherDStore()
-
 
 class PrivateKeyStore:
 	def __init__(self, CIPHER_KEY) -> None:
@@ -138,4 +136,3 @@ if __name__ == '__main__':
 			case _:
 				print('\nPlease choose a valid option next time!')
 		exitFlag = False if input('\nDo you want to continue to the program ? \n\ta. Press \'c\' to continue! \n\tb. Press \'any other key\' to quit the program!  \n\nYou have chosen: ') == 'c' else True
-

@@ -2,7 +2,6 @@ import os
 import logging
 from logging.handlers import RotatingFileHandler
 
-
 class Logger:
 	''' This is used to log information into a log file '''
 	_ref = None
@@ -37,7 +36,5 @@ class Logger:
 	def _logError(self, error):
 		self._logger.error(f'Exception Type: {type(error)} | Error: {error}')
 
-
 # initialize logger
 Logger.initialize()
-

@@ -3,7 +3,6 @@ import urllib.parse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-
 class Connections:
 	''' This is used to get connections ref '''
 	@staticmethod
@@ -21,4 +20,3 @@ class Connections:
 			return session
 		except Exception as exc:
 			raise Exception(exc)
-

@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from utils.logger import Logger
-from utils.connectors import Connections
-from utils.secureText import SecureText
-from utils.models import AuthUser
-from utils.validators import UserLoginValidator, RegisterUserValidator
+from library.logger import Logger
+from library.connectors import Connections
+from library.secureText import SecureText
+from library.models import AuthUser
+from library.validators import UserLoginValidator, RegisterUserValidator
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,7 +13,6 @@ from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from pydantic import ValidationError as PydanticValidationError
-
 
 class UserLogin(TokenObtainPairView):
 	def post(self, request, format=None):
@@ -69,7 +68,6 @@ class UserLogin(TokenObtainPairView):
 			'message': API_MESSAGE,
 			'data'	 : DATA
 		}, status=API_STATUS)
-
 
 class RegisterUser(APIView):
 	''' This API is used to register a new user '''
@@ -134,7 +132,6 @@ class RegisterUser(APIView):
 			'data'   : DATA
 		}, status=API_STATUS)
 
-
 class UpdateUserDetails(APIView):
 	def post(self, request, format=None):
 		''' This API is used to update user details [post login] '''
@@ -160,7 +157,6 @@ class UpdateUserDetails(APIView):
 			'message': API_MESSAGE,
 			'data'   : DATA
 		}, status=API_STATUS)
-
 
 class ForgotPassword(APIView):
 	def post(self, request, format=None):
@@ -188,7 +184,6 @@ class ForgotPassword(APIView):
 			'data'	 : DATA
 		}, status=API_STATUS)
 
-
 class DeleteUser(APIView):
 	def post(self, request, format=None):
 		''' This API is used to delete user account '''
@@ -214,4 +209,3 @@ class DeleteUser(APIView):
 			'message': API_MESSAGE,
 			'data'	 : DATA
 		}, status=API_STATUS)
-
