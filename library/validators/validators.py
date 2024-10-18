@@ -1,5 +1,5 @@
 import re
-from amkrStudio.settings import MASTER_REGEX
+from amkr_studio.settings import MASTER_REGEX
 from pydantic import BaseModel, Field, field_validator
 from pydantic.functional_validators import AfterValidator
 from typing_extensions import Annotated

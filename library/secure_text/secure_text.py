@@ -50,7 +50,7 @@ class SecureText:
 		self.__keyStore._generateCipherDStore()
 		dataString = jwt.encode(self.__keyStore._getCipherEStore(), self.__SECRET_KEY, algorithm='HS256')
 		cipherText = base64.b64encode(dataString.encode('utf-8')).decode('utf-8')
-		with open('cipherText.txt', 'w') as file:
+		with open('cipher_text.txt', 'w') as file:
 			file.write(str(cipherText).strip())
 	
 	def _verifyCipherText(self, cipherText='') -> None:
@@ -96,22 +96,22 @@ if __name__ == '__main__':
 		userOption = input('\n\nDo you already have a CIPHER TEXT ? \n\ta. Press \'c\' to continue with the default CIPHER TEXT \n\tb. Press \'y\' if you already have a CIPHER TEXT \n\tc. Press \'g\' to generate a CIPHER TEXT  \n\td. Press \'r\' to report a BUG \n\nYou have chosen: ')
 		match userOption:
 			case 'y':
-				print('\nPlease add the CIPHER TEXT into the \'cipherText.txt\' file! then start the program!\n')
+				print('\nPlease add the CIPHER TEXT into the \'cipher_text.txt\' file! then start the program!\n')
 				exit()
 			case 'g':
 				SecureText._ref._generateCipherText()
-				print('\nYour CIPHER TEXT has been generated successfully! and added into the \'cipherText.txt\' file!')
+				print('\nYour CIPHER TEXT has been generated successfully! and added into the \'cipher_text.txt\' file!')
 				exitFlag = True
 			case 'c':
 				try:
-					with open('cipherText.txt', 'r') as file:
+					with open('cipher_text.txt', 'r') as file:
 						cipherText = str(file.read()).strip()
 						SecureText._ref._verifyCipherText(cipherText)
 						exitFlag = True
 				except Exception as exc:
 					print('\n\n', exc)
 					exitFlag = False
-					print('\nCIPHER TEXT is INVALID! Make sure you have added a valid CIPHER TEXT inside the \'cipherText.txt\' file!')
+					print('\nCIPHER TEXT is INVALID! Make sure you have added a valid CIPHER TEXT inside the \'cipher_text.txt\' file!')
 			case 'r':
 				print('\nPlease send me a detail email at \'amitmanna0287@gmail.com\'. Keep the subject as \'BUG: Custom Encryption & Decryption Program\'. \n\nTo follow me use below social accounts: \n\ta. LinkedIn: https://www.linkedin.com/in/amitm0287/ \n\tb. GitHub: https://github.com/AmitM0287 \n\nThank you for time! Have a good day :)\n')
 				exit()
