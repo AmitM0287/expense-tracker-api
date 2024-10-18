@@ -1,10 +1,10 @@
 from datetime import datetime
 
-from library.logger import Logger
-from library.connectors import Connections
-from library.secureText import SecureText
-from library.models import AuthUser
-from library.validators import UserLoginValidator, RegisterUserValidator
+from library.loggers.logger import Logger
+from library.connectors.connections import Connections
+from library.secure_text.secure_text import SecureText
+from library.models.models import AuthUser
+from library.validators.validators import UserLoginValidator, RegisterUserValidator
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
