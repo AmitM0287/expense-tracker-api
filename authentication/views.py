@@ -1,11 +1,3 @@
-from datetime import datetime
-
-from library.loggers.logger import Logger
-from library.connectors.connections import Connections
-from library.secure_text.secure_text import SecureText
-from library.models.models import AuthUser
-from library.validators.validators import UserLoginValidator, RegisterUserValidator
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,6 +5,13 @@ from rest_framework.exceptions import AuthenticationFailed, ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from pydantic import ValidationError as PydanticValidationError
+from library.connectors.connections import Connections
+from library.secure_text.secure_text import SecureText
+from library.models.models import AuthUser
+from library.validators.validators import UserLoginValidator, RegisterUserValidator
+from library.loggers.logger import Logger
+from datetime import datetime
+
 
 class UserLogin(TokenObtainPairView):
 	def post(self, request, format=None):

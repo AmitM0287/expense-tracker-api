@@ -20,6 +20,9 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Define MEDIA_ROOT
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
 
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
 	'rest_framework_simplejwt',
 	'amkr_studio',
 	'authentication',
+	'downloader',
 ]
 
 MIDDLEWARE = [

@@ -18,3 +18,14 @@
 # Reference
 -	https://xlsxwriter.readthedocs.io/example_chart_combined.html
 -	https://xlsxwriter.readthedocs.io/chart_examples.html#chart-examples
+
+
+
+#	Build the Final Image
+-	Whenever you want to create the final image with your application code, run the following command:
+	-	docker build -t yourusername/amkr-studio-api:latest .
+	-	docker run -p 8000:8000 yourusername/amkr-studio-api:latest
+
+# Tasks
+-	User permission featuare - user group - admin
+-	Admin can see all user can update the user data too - admin console - get all user data

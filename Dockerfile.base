@@ -1,0 +1,25 @@
+# Build the base image. 
+#	docker build -f Dockerfile.base -t <username>/amkr-studio-base:master-<commit_id>-<version>
+#	docker build -f Dockerfile.base -t amkrstudio/amkr-studio-base:master-c2b2ba8-v1
+
+# Use the official Python 3.12 image from the Docker Hub
+FROM python:3.12.0 AS base
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements.txt file into the container
+COPY requirements.txt /app/
+
+# Install the Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Install yt-dlp
+RUN pip install yt-dlp
+
+# Create a media directory inside the /app directory
+RUN mkdir /app/media

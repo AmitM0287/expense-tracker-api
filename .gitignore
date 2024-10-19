@@ -167,3 +167,6 @@ migrations/
 
 # Credentails
 credentials/
+
+# media
+media/
