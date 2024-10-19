@@ -1,13 +1,10 @@
-# Use the base image
-FROM yourusername/amkr-studio-base:latest AS final
-
-# Set the working directory inside the container
-WORKDIR /app
+# Use the base image created from Dockerfile.base
+FROM amkrstudio/amkr-studio-base:master-0db125d-v1
 
 # Copy the rest of your Django project files into the container
-COPY . /app/
+COPY . /application/
 
-# Expose the port the Django app runs on (replace 8000 with your actual port if needed)
+# Expose the port the application runs on (replace 8000 with your actual port if needed)
 EXPOSE 8000
 
 # Start the Django development server
