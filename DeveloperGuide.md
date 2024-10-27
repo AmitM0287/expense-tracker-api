@@ -88,6 +88,10 @@
   ```bash
   kubectl exec -it postgres-<pod-name> -- bash
   ```
+- Get details of pods with additional information:
+  ```bash
+  kubectl get pods -o wide
+  ```
 
 ### PostgreSQL Commands
 
@@ -111,4 +115,17 @@
 - Copy the backup file from the local machine to the pod.
   ```bash
   kubectl cp ~/Desktop/amkr-studio.sql postgres-6f4dc46bb9-z9gdj:/tmp/amkr-studio.sql
+  ```
+
+### Additional Commands
+
+**6. Additional Commands:**
+- You can encode your password using the following command:
+  ```bash
+  echo -n "test@1234" | base64
+  ```
+- You can decode the base64 string using the following command::
+
+  ```bash
+  echo "dGVzdEAxMjM0" | base64 --decode
   ```
