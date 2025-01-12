@@ -1,20 +1,25 @@
-from rest_framework.views import APIView
-from rest_framework import status
-from rest_framework.response import Response
-from django.http import StreamingHttpResponse, FileResponse
-from library.loggers.logger import Logger
-from datetime import datetime
+import subprocess
+import zipfile
+import shutil
 import subprocess
 import os
 import re
 import time
+from datetime import datetime
+
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from django.http import StreamingHttpResponse, FileResponse
+from library.loggers.logger import Logger
 from django.conf import settings
-import subprocess
-import zipfile
-import shutil
 
 
 class YouTubeDownloader(APIView):
+	permission_classes = [AllowAny]
+	authentication_classes = []
+
 	def post(self, request, format=None):
 		''' This API downloads and optionally converts YouTube videos '''
 		API_PROCESSING_TIME = datetime.now()
@@ -24,7 +29,7 @@ class YouTubeDownloader(APIView):
 
 		try:
 			# Get the video URL and target format from the request
-			video_url = request.POST.get('url')
+			video_url = request.POST.get('url', 'https://youtube.com/shorts/JBiEPm48H-I?feature=shared')
 			target_format = request.POST.get('format', 'mp4')  # Default to mp4 if not specified
 
 			if not video_url:
@@ -276,3 +281,74 @@ class VideoSplitter(APIView):
 		# Remove the folder containing the uploaded file
 		if os.path.exists(folder_path):
 			shutil.rmtree(folder_path)  # Remove the directory and all its contents
+
+
+class MediaCleanupView(APIView):
+    def post(self, request, format=None):
+        ''' Cleans up media files based on provided criteria. '''
+        API_PROCESSING_TIME = datetime.now()
+        API_STATUS = status.HTTP_500_INTERNAL_SERVER_ERROR
+        API_MESSAGE = ''
+        DATA = {'cleaned_files': [], 'errors': []}
+
+        # Path to the media folder
+        media_dir = settings.MEDIA_ROOT  # Ensure MEDIA_ROOT is defined in your settings
+
+        # Get the default time if defined in settings, in minutes
+        default_time = getattr(settings, 'DEFAULT_CLEANUP_TIME', 30)  # Default to 30 minutes if not set
+        thirty_minutes_ago = time.time() - (default_time * 60)  # Convert minutes to seconds
+
+        # Get the filename from the request data
+        filename_to_delete = request.data.get('filename', None)
+
+        try:
+            if filename_to_delete:
+                # If a filename is provided, attempt to delete it
+                file_path = os.path.join(media_dir, filename_to_delete)
+
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)  # Delete the specified file
+                    DATA['cleaned_files'].append(filename_to_delete)
+                    API_MESSAGE = f'Deleted: {filename_to_delete}.'
+                else:
+                    API_MESSAGE = f'File not found: {filename_to_delete}.'
+
+            else:
+                # If no filename provided, delete files older than default_time
+                for filename in os.listdir(media_dir):
+                    file_path = os.path.join(media_dir, filename)
+
+                    # Check if it is a file and exists
+                    if os.path.isfile(file_path):
+                        # Get the last modified time
+                        file_mod_time = os.path.getmtime(file_path)
+
+                        # Check if the file is older than the specified time
+                        if file_mod_time < thirty_minutes_ago:
+                            os.unlink(file_path)  # Delete the file
+                            DATA['cleaned_files'].append(filename)
+
+                API_MESSAGE = f'Cleaned up {len(DATA["cleaned_files"])} files older than {default_time} minutes.'
+
+            API_STATUS = status.HTTP_200_OK
+
+            # Calculate the processing time in milliseconds
+            API_PROCESSING_TIME = int((datetime.now() - API_PROCESSING_TIME).total_seconds() * 1000)
+
+            # Log the processing time, message, and status
+            Logger._ref._logInfo(API_PROCESSING_TIME, API_MESSAGE, API_STATUS)
+            
+            return Response({
+                'processingTime': API_PROCESSING_TIME,
+                'status': API_STATUS,
+                'message': API_MESSAGE,
+                'data': DATA
+            }, status=API_STATUS)
+
+        except Exception as e:
+            Logger._ref._logError(f"Error during cleanup: {str(e)}")
+            return Response({
+                'status': 'error',
+                'message': f'An error occurred: {str(e)}',
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

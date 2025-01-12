@@ -19,7 +19,9 @@
 -	https://xlsxwriter.readthedocs.io/example_chart_combined.html
 -	https://xlsxwriter.readthedocs.io/chart_examples.html#chart-examples
 
-
+# Versions
+- pip==23.2.1
+- Python 3.12.0
 
 #	Build the Final Image
 -	Whenever you want to create the final image with your application code, run the following command:

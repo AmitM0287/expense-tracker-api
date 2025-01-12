@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
 	path('authentication/', include('authentication.urls')),
 	path('downloader/', include('downloader.urls')),
+	path('ml_tools/', include('ml_tools.urls')),
 ]
