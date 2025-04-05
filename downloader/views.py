@@ -29,7 +29,7 @@ class YouTubeDownloader(APIView):
 
 		try:
 			# Get the video URL and target format from the request
-			video_url = request.POST.get('url', 'https://youtube.com/shorts/JBiEPm48H-I?feature=shared')
+			video_url = request.POST.get('url', '')
 			target_format = request.POST.get('format', 'mp4')  # Default to mp4 if not specified
 
 			if not video_url:
@@ -38,9 +38,15 @@ class YouTubeDownloader(APIView):
 
 			# Define output file name for yt-dlp
 			output_file_name = os.path.join(settings.MEDIA_ROOT, '%(id)s.%(ext)s')
-			command = f'yt-dlp -o "{output_file_name}" "{video_url}"'
+
+			# Download best quality audio
+			if target_format == "mp3":
+				command = f'yt-dlp -x --audio-format mp3 --audio-quality 0 -o "{output_file_name}" "{video_url}"'
+			else:
+				command = f'yt-dlp -o "{output_file_name}" "{video_url}"'
+			
 			subprocess.run(command, shell=True, check=True)
-			print("Downloaded video.")
+			print("Downloaded video/audio.")
 
 			# Extract video ID from the provided URL
 			video_id = self.extract_video_id(video_url)
@@ -48,7 +54,7 @@ class YouTubeDownloader(APIView):
 				raise Exception("Could not extract video ID from the URL.")
 			
 			# Path to the downloaded file
-			downloaded_file_path = os.path.join(settings.MEDIA_ROOT, f'{video_id}.webm')
+			downloaded_file_path = os.path.join(settings.MEDIA_ROOT, f'{video_id}.{"mp3" if target_format == "mp3" else "webm"}')
 
 			# Convert the video to the specified format if needed
 			if target_format in ['mp4', 'mov']:
