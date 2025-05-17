@@ -11,6 +11,7 @@ from library.models.models import AuthUser
 from library.validators.validators import UserLoginValidator, RegisterUserValidator
 from library.loggers.logger import Logger
 from datetime import datetime
+from rest_framework.permissions import AllowAny
 
 
 class UserLogin(TokenObtainPairView):
@@ -68,7 +69,11 @@ class UserLogin(TokenObtainPairView):
 			'data'	 : DATA
 		}, status=API_STATUS)
 
+
 class RegisterUser(APIView):
+	# permission_classes = [AllowAny]
+	# authentication_classes = []
+
 	''' This API is used to register a new user '''
 	def post(self, request, format=None):
 		API_PROCESSING_TIME = datetime.now()
