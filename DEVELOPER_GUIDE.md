@@ -8,12 +8,12 @@
 
 - Build the base image using `Docker.base`:
 ```bash
-docker build -f Dockerfile.base -t amkrstudio/amkr-studio-base:master-6aad30f-v1 .
+docker build -f Dockerfile.base -t amkrstudio/amkr-studio-api-base:master-600432f-v108 .
 ```
 
 - Push the base image to Docker Hub:
 ```bash
-docker push amkrstudio/amkr-studio-base:master-6aad30f-v1
+docker push amkrstudio/amkr-studio-api-base:master-600432f-v108
 ```
 
 ---
@@ -22,12 +22,12 @@ docker push amkrstudio/amkr-studio-base:master-6aad30f-v1
 
 - Build the API image using `Dockerfile`:
 ```bash
-docker build -f Dockerfile -t amkrstudio/amkr-studio-api:master-6aad30f-v1 .
+docker build -f Dockerfile -t amkrstudio/amkr-studio-api:master-600432f-v108 .
 ```
 
 - Push the image to Docker Hub:
 ```bash
-docker push amkrstudio/amkr-studio-api:master-6aad30f-v1
+docker push amkrstudio/amkr-studio-api:master-600432f-v108
 ```
 
 ---
@@ -133,7 +133,7 @@ git push -u origin main
 - ✅ Use `--no-cache-dir` in all `pip install`
 - ✅ Keep Docker base image minimal (Python + ffmpeg only)
 - ✅ Always use `.dockerignore` for faster and cleaner builds
-- ✅ Tag Docker images with traceable versions (`master-<commit_id>-v1`)
+- ✅ Tag Docker images with traceable versions (`master-<commit_id>-v108`)
 - ✅ Use meaningful commit messages and environment-specific ConfigMaps
 
 ---
