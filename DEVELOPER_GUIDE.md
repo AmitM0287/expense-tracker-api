@@ -8,12 +8,12 @@
 
 - Build the base image using `Docker.base`:
 ```bash
-docker build -f Docker.base -t amkrstudio/amkr-studio-base:master-0db125d-v1 .
+docker build -f Dockerfile.base -t amkrstudio/amkr-studio-base:master-6aad30f-v1 .
 ```
 
 - Push the base image to Docker Hub:
 ```bash
-docker push amkrstudio/amkr-studio-base:master-0db125d-v1
+docker push amkrstudio/amkr-studio-base:master-6aad30f-v1
 ```
 
 ---
@@ -22,12 +22,12 @@ docker push amkrstudio/amkr-studio-base:master-0db125d-v1
 
 - Build the API image using `Dockerfile`:
 ```bash
-docker build -f Dockerfile -t amkrstudio/amkr-studio-api:master-0db125d-v1 .
+docker build -f Dockerfile -t amkrstudio/amkr-studio-api:master-6aad30f-v1 .
 ```
 
 - Push the image to Docker Hub:
 ```bash
-docker push amkrstudio/amkr-studio-api:master-0db125d-v1
+docker push amkrstudio/amkr-studio-api:master-6aad30f-v1
 ```
 
 ---

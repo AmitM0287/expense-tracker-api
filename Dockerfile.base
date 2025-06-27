@@ -1,21 +1,22 @@
 # Docker.base
+FROM python:3.12.10-slim-bullseye AS base
 
-FROM python:3.12.10-slim AS base
-
+# Python settings for Docker
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app
-
-# Install only required system package
-RUN apt-get update && \
+# Install only ffmpeg (minimal setup, works on M1/ARM64 too)
+RUN apt-get clean && \
+    apt-get update --allow-releaseinfo-change --fix-missing && \
     apt-get install -y ffmpeg && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy and install Python dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt && \
-    rm -rf ~/.cache/pip
+# Set working directory
+WORKDIR /app
 
-# Optional: create media directory
+# Copy requirements and install Python packages cleanly
+COPY requirements.txt .
+RUN pip install --no-cache-dir --root-user-action=ignore -r requirements.txt
+
+# Create media directory for uploads
 RUN mkdir -p /app/media
