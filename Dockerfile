@@ -1,36 +1,28 @@
-# First stage: build the application
-FROM amkrstudio/amkr-studio-base:master-0db125d-v1 as build
+# Dockerfile
 
-# Set the working directory inside the container
-WORKDIR /app
+# Stage 1: base image with Python deps + ffmpeg
+FROM amkrstudio/amkr-studio-base:master-0db125d-v1 AS base
 
-# Copy the rest of your Django project files into the container
-COPY . /app/
+# Stage 2: final runtime image
+FROM python:3.12.10-slim AS final
 
-# Install any additional dependencies if needed
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Second stage: create the final image
-FROM python:3.12.0-alpine as final
-
-# Install build dependencies
-RUN apk add --no-cache gcc musl-dev linux-headers
-
-# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy only the necessary files from the build stage
-COPY --from=build /app /app
+# Only copy minimal binaries needed
+COPY --from=base /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=base /usr/local/bin/gunicorn /usr/local/bin/
 
-# Install uWSGI
-RUN pip install --no-cache-dir uwsgi
+# Copy project code
+COPY . .
 
-# Expose the port the application runs on (replace 8000 with your actual port if needed)
+# Collect static files (if using whitenoise or storing in S3)
+RUN python manage.py collectstatic --noinput
+
+# Expose default app port
 EXPOSE 8000
 
-# Start uWSGI server
-CMD ["uwsgi", "--http", "0.0.0.0:8000", "--module", "amkrstudio.wsgi:application", "--master", "--processes", "4", "--threads", "2"]
+# Run using gunicorn
+CMD ["gunicorn", "amkrstudio.wsgi:application", "--bind", "0.0.0.0:8000"]
