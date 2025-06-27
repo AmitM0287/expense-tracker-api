@@ -1,79 +1,98 @@
-# 📊 AMKR Studio API – Expense Tracker Backend
+# 🧾 AMKR Studio API
 
-The **AMKR Studio API** is a Django-powered backend for managing personal finances and tracking expenses with long-term savings goals.
-
----
-
-## 🎯 Key Features
-
-- 📅 Track your **day-to-day expenses** with categories
-- 💰 Build disciplined **savings habits**
-- ❌ Avoid **unnecessary spends**
-- 🧠 Enable smarter **budget planning**
-- 📈 Support for multi-user + admin data visibility
+AMKR Studio is a Django-based backend service providing utilities for budgeting, media downloading, and AI tools, built with modern authentication and deployment standards.
 
 ---
 
-## 🐍 Python Environment
+## 🚀 Features
+
+- 🔊 Text-to-speech conversion
+- 📥 YouTube video & Shorts downloader
+- ✂️ Video splitter (into X parts)
+- 🔐 2FA authentication support
+- 🔑 Google OAuth login integration
+- 👤 Traditional username-password login
+- 🛠️ Modular Django APIs with JWT Auth
+
+---
+
+## 🐍 Python Version
 
 - Python: `3.12.10`
-- pip: `25.0.1`
+- Pip: `25.0.1`
+- PostgreSQL: `16`
 - ffmpeg: `7.1.1`
 
 ---
 
-## 🧱 Naming Convention
+## 📁 Naming Convention
 
-- ✅ File names: `snake_case`
-- ✅ Variable names: `camelCase`
-
----
-
-## 👥 Contributors
-
-- 👨‍💻 Amit M
-- 🙏 Kṛṣṇa R
+| Type        | Convention |
+|-------------|------------|
+| File names  | `snake_case` |
+| Variables   | `camelCase` |
 
 ---
 
-## 📚 Reference Links
+## 🛠️ Development Setup
 
-- [XlsxWriter Combined Chart Example](https://xlsxwriter.readthedocs.io/example_chart_combined.html)
-- [XlsxWriter Chart Examples](https://xlsxwriter.readthedocs.io/chart_examples.html#chart-examples)
+```bash
+# Clone the repo
+git clone https://github.com/amitkrishnadev/amkr-studio-api.git && cd amkr-studio-api
 
----
+# Create virtual environment
+python3 -m venv venv && source venv/bin/activate
 
-## 🧪 Version Pinning
+# Install requirements
+pip install --no-cache-dir -r requirements.txt
 
-```txt
-Python         3.12.10
-pip            25.0.1
-ffmpeg         7.1.1
+# Run server
+python manage.py runserver
 ```
 
-Lock dependencies via `requirements.txt` and `Docker.base`.
+---
+
+## 📦 Docker Versions
+
+```bash
+# Python Base Image
+python:3.12.10-slim
+
+# Pip Version
+pip 25.0.1
+
+# ffmpeg Version
+ffmpeg 7.1.1
+
+# PostgreSQL Version
+PostgreSQL 16
+```
 
 ---
 
-## 🛠️ Planned Features
+## ✍️ Credits
 
-- [ ] ✅ Role-based **user permission** system
-- [ ] 🛡️ **Admin group** who can read/write all user data
-- [ ] 📋 Admin dashboard to **view/edit all users’ records**
-- [ ] 🖥️ Improved **Django Admin Console** for user management
+- 👨‍💻 Amit M
+- 🌸 Kṛṣṇa R
 
 ---
 
-## 🚀 Deployment Note
+## 📚 References
 
-For Docker build/push/Kubernetes steps, see:  
-📄 `DEVELOPER_GUIDE.md`
-
----
-
-## 🙌 Jai Śrī Kṛṣṇa!
-
-Every paisa saved with dharma in mind becomes a seed for your devotional future 🌱
+- https://xlsxwriter.readthedocs.io/example_chart_combined.html
+- https://xlsxwriter.readthedocs.io/chart_examples.html#chart-examples
 
 ---
 
+## 📋 Tasks (In Progress)
+
+- [x] JWT-based authentication
+- [x] Google OAuth integration
+- [x] YouTube downloader (video & shorts)
+- [x] Video splitter API
+- [x] Text-to-speech (multi-language)
+- [ ] Admin panel for user data management
+- [ ] Group-based permissions
+- [ ] Media cleanup & storage rotation
+
+---

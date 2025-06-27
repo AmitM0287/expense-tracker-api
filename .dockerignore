@@ -17,5 +17,5 @@ Docker.base
 .idea/
 .vscode/
 tests/
-# macOS metadata
 .DS_Store
+.env

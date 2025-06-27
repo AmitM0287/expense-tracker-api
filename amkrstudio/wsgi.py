@@ -1,5 +1,5 @@
 '''
-WSGI config for amkr_studio project.
+WSGI config for amkrstudio project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -10,6 +10,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'amkr_studio.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'amkrstudio.settings')
 
 application = get_wsgi_application()

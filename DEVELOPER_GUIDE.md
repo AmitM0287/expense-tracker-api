@@ -4,30 +4,36 @@
 
 ## 🐳 Docker Commands
 
-### 1️⃣ Build & Push the Docker Base Image
+### 1️⃣ Build & Push the Docker Image
 
-- Build the base image using `Docker.base`:
+- Docker buildx command for local:
 ```bash
-docker build -f Dockerfile.base -t amkrstudio/amkr-studio-api-base:master-600432f-v108 .
+docker buildx build --no-cache --platform linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --load .
 ```
 
-- Push the base image to Docker Hub:
+- Docker buildx command to build and push to registry:
 ```bash
-docker push amkrstudio/amkr-studio-api-base:master-600432f-v108
+docker buildx build --no-cache --platform linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
 ```
 
----
-
-### 2️⃣ Build & Push the Docker API Image
-
-- Build the API image using `Dockerfile`:
+- Docker buildx command to build and push final image to registry:
 ```bash
-docker build -f Dockerfile -t amkrstudio/amkr-studio-api:master-600432f-v108 .
+docker buildx build --no-cache --platform linux/arm64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
 ```
 
-- Push the image to Docker Hub:
+- Docker Push command to push image to Docker Hub:
 ```bash
-docker push amkrstudio/amkr-studio-api:master-600432f-v108
+docker push amitkrishnadev/amkrstudio:amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
+```
+
+- Docker Pull command to pull image to Docker Hub:
+```bash
+docker pull amitkrishnadev/amkrstudio:amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
+```
+
+- Docker Run command to run image locally:
+```bash
+docker run -d --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
 
 ---
@@ -137,4 +143,10 @@ git push -u origin main
 - ✅ Use meaningful commit messages and environment-specific ConfigMaps
 
 ---
+
+docker buildx build \
+  --platform linux/amd64,linux/arm64 \
+  -f Dockerfile.base \
+  -t amkrstudio/amkr-studio-api-base:master-600432f-v108 \
+  --push .
 
