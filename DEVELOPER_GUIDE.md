@@ -8,12 +8,12 @@
 
 - Docker buildx command to build and push the Base Image to registry:
 ```bash
-docker buildx build --no-cache --platform linux/amd64, linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
+docker buildx build --no-cache --platform linux/amd64,linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
 ```
 
 - Docker buildx command to build and push the Final image to registry:
 ```bash
-docker buildx build --no-cache --platform linux/amd64, linux/arm64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
+docker buildx build --no-cache --platform linux/amd64,linux/arm64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
 ```
 
 - Docker Push command to push image to Docker Hub:

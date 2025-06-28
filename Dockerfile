@@ -8,4 +8,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the app with Gunicorn
-CMD ["gunicorn", "amkrstudio.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "amkrstudio.wsgi:application", "--bind", "0.0.0.0:8000", "--timeout", "600", "--workers", "2", "--worker-class", "gthread"]
