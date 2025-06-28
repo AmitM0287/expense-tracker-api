@@ -6,28 +6,14 @@
 
 ### Build & Push the Docker Image [linux/amd64, linux/arm64] ###
 
-- Docker buildx command to build the Base Image for local:
-```bash
-docker buildx build --no-cache --platform linux/amd64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --load .
-```
-```bash
-docker buildx build --no-cache --platform linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --load .
-```
-
 - Docker buildx command to build and push the Base Image to registry:
 ```bash
-docker buildx build --no-cache --platform linux/amd64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
-```
-```bash
-docker buildx build --no-cache --platform linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
+docker buildx build --no-cache --platform linux/amd64, linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
 ```
 
 - Docker buildx command to build and push the Final image to registry:
 ```bash
-docker buildx build --no-cache --platform linux/amd64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
-```
-```bash
-docker buildx build --no-cache --platform linux/arm64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
+docker buildx build --no-cache --platform linux/amd64, linux/arm64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
 ```
 
 - Docker Push command to push image to Docker Hub:
@@ -42,19 +28,26 @@ docker pull amitkrishnadev/amkrstudio:amitkrishnadev/amkrstudio:amkr-studio-api-
 
 - Docker Run command to run image locally:
 
-Ensure the container is automatically removed once it stops [--rm]
+- Ensure the container is automatically removed once it stops [--rm]
 ```bash
 docker run --rm --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
 
-Ensure the container is detached, will not get automatically removed once it stops [-d]
+- Ensure the container is detached, will not get automatically removed once it stops [-d]
 ```bash
 docker run -d --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
 
-Detached + Manual Cleanup [safer for prod]
+- Detached + Manual Cleanup [safer for prod]
 ```bash
 docker rm -f amkrstudio-api
+```
+
+- Check platform of image
+
+- To confirm your image supports ARM:
+```bash
+docker buildx imagetools inspect amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
 
 ---

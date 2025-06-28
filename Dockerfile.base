@@ -1,22 +1,33 @@
-# Python Official Image
-FROM python:3.12-alpine AS base
+# Python Official Image (Alpine-based: lightweight & multi-arch compatible)
+FROM python:3.12.11-alpine3.22 AS base
 
-# Required for clean, real-time logging and lighter containers
+# Set Python environment flags (No .pyc + unbuffered logs)
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1 \
+    LANG=C.UTF-8 \
+    PATH="/usr/local/bin:$PATH"
 
-# Install ffmpeg with Alpine package manager
-RUN apk update && \
-    apk add --no-cache ffmpeg
+# Install essential system packages (Essential Alpine packages)
+RUN set -eux; \
+    apk update && \
+    apk add --no-cache \
+        ffmpeg      # Required for media processing via ffmpeg-python, yt-dlp etc. \                
+        gcc         # For compiling some Python wheels pandas, pydantic (via Cython), etc. \
+        musl-dev    # Libc implementation for Alpine, needed by most Python C extensions \
+        libffi-dev  # Required for PyJWT, cryptographic dependencies etc. \
+        zlib-dev    # Used by many core packages like needed by pandas, XlsxWriter etc.
 
-# Set working dir
+# Install yt-dlp via pip (not available via apk reliably)
+RUN pip install --no-cache-dir yt-dlp   # For YouTube video/audio download support
+
+# Set work directory
 WORKDIR /app
+
+# Create necessary folders
+RUN mkdir -p /app/media
 
 # Copy requirements
 COPY requirements.txt .
 
-# Install Python packages
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Create media dir
-RUN mkdir -p /app/media
