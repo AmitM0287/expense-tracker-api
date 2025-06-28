@@ -4,19 +4,28 @@
 
 ## 🐳 Docker Commands
 
-### 1️⃣ Build & Push the Docker Image
+### Build & Push the Docker Image [linux/amd64, linux/arm64]
 
 - Docker buildx command for local:
+```bash
+docker buildx build --no-cache --platform linux/amd64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --load .
+```
 ```bash
 docker buildx build --no-cache --platform linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --load .
 ```
 
-- Docker buildx command to build and push to registry:
+- Docker buildx command to build and push the Base Image to registry:
+```bash
+docker buildx build --no-cache --platform linux/amd64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
+```
 ```bash
 docker buildx build --no-cache --platform linux/arm64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --push .
 ```
 
-- Docker buildx command to build and push final image to registry:
+- Docker buildx command to build and push the Final image to registry:
+```bash
+docker buildx build --no-cache --platform linux/amd64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
+```
 ```bash
 docker buildx build --no-cache --platform linux/arm64 -f Dockerfile -t amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8 --push .
 ```
@@ -26,12 +35,15 @@ docker buildx build --no-cache --platform linux/arm64 -f Dockerfile -t amitkrish
 docker push amitkrishnadev/amkrstudio:amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
 
-- Docker Pull command to pull image to Docker Hub:
+- Docker Pull command to pull image from Docker Hub:
 ```bash
 docker pull amitkrishnadev/amkrstudio:amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
 
 - Docker Run command to run image locally:
+```bash
+docker run --rm --platform linux/arm64 -p 8000:8000 amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
+```
 ```bash
 docker run -d --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
@@ -40,7 +52,7 @@ docker run -d --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/
 
 ## ☸️ Kubernetes Commands
 
-### 3️⃣ Apply ConfigMap & Restart
+### Apply ConfigMap & Restart
 
 - Apply the ConfigMap:
 ```bash
@@ -54,7 +66,7 @@ kubectl rollout restart deployment amkr-studio-api
 
 ---
 
-### 4️⃣ Cluster Management
+### Cluster Management
 
 ```bash
 kubectl get services                # List all services
@@ -101,6 +113,8 @@ kubectl cp ~/Desktop/amkr-studio.sql <pg-pod>:/tmp/amkr-studio.sql
 
 ```bash
 echo -n "test@1234" | base64          # Encode
+```
+```bash
 echo "dGVzdEAxMjM0" | base64 --decode # Decode
 ```
 
@@ -122,15 +136,13 @@ git remote remove origin
 
 - Add a new origin:
 ```bash
-git remote add origin https://github.com/newuser/newrepo.git
+git remote add origin https://github.com/amitkrishnadev/amkr-studio-api.git
 ```
 
 - Push to new origin:
 ```bash
-git push -u origin main
+git push -u origin master
 ```
-
-> Replace `main` with `master` if applicable.
 
 ---
 
@@ -143,10 +155,3 @@ git push -u origin main
 - ✅ Use meaningful commit messages and environment-specific ConfigMaps
 
 ---
-
-docker buildx build \
-  --platform linux/amd64,linux/arm64 \
-  -f Dockerfile.base \
-  -t amkrstudio/amkr-studio-api-base:master-600432f-v108 \
-  --push .
-

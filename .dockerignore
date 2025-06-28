@@ -18,4 +18,8 @@ Docker.base
 .vscode/
 tests/
 .DS_Store
-.env
+LICENSE
+README.md
+requirements.txt
+Dockerfile
+Dockerfile.base
