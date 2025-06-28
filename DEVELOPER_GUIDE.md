@@ -41,11 +41,20 @@ docker pull amitkrishnadev/amkrstudio:amitkrishnadev/amkrstudio:amkr-studio-api-
 ```
 
 - Docker Run command to run image locally:
+
+Ensure the container is automatically removed once it stops [--rm]
 ```bash
-docker run --rm --platform linux/arm64 -p 8000:8000 amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
+docker run --rm --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
 ```
+
+Ensure the container is detached, will not get automatically removed once it stops [-d]
 ```bash
 docker run -d --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/amkrstudio:amkr-studio-api-master-v1.0.8
+```
+
+Detached + Manual Cleanup [safer for prod]
+```bash
+docker rm -f amkrstudio-api
 ```
 
 ---
