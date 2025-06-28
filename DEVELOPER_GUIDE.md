@@ -1,12 +1,12 @@
-# 🧑‍💻 AMKR STUDIO API – Developer Guide
+### 🧑🏻‍💻 AMKR STUDIO API – Developer Guide ###
 
 ---
 
-## 🐳 Docker Commands
+### 🐳 Docker Commands ###
 
-### Build & Push the Docker Image [linux/amd64, linux/arm64]
+### Build & Push the Docker Image [linux/amd64, linux/arm64] ###
 
-- Docker buildx command for local:
+- Docker buildx command to build the Base Image for local:
 ```bash
 docker buildx build --no-cache --platform linux/amd64 -f Dockerfile.base -t amitkrishnadev/amkrstudio:amkr-studio-api-base-master-v1.0.8 --load .
 ```
@@ -50,79 +50,50 @@ docker run -d --env-file .env -p 8000:8000 --name amkrstudio-api amitkrishnadev/
 
 ---
 
-## ☸️ Kubernetes Commands
+### 🐘 PostgreSQL Commands ###
 
-### Apply ConfigMap & Restart
-
-- Apply the ConfigMap:
+- Inside Pod:
 ```bash
-kubectl apply -f amkr-studio-cm.yaml
+kubectl exec -it podname -- psql -U dbuser
 ```
 
-- Restart the deployment:
-```bash
-kubectl rollout restart deployment amkr-studio-api
-```
-
----
-
-### Cluster Management
-
-```bash
-kubectl get services                # List all services
-kubectl get deployments            # List all deployments
-kubectl get pods                   # List all pods
-kubectl get pods -o wide           # Get detailed pod info
-kubectl get pods | grep amkr       # Filter pods by name
-kubectl logs <pod-name>            # View logs of a pod
-kubectl describe pod <pod-name>    # Detailed info of a pod
-kubectl delete deployment <name>   # Delete deployment
-kubectl delete service <name>      # Delete service
-kubectl exec -it <pg-pod> -- bash  # Enter PostgreSQL pod
-```
-
----
-
-## 🐘 PostgreSQL Commands (Inside Pod)
-
-```bash
-kubectl exec -it <pg-pod> -- psql -U amitmanna
-```
-
-Inside psql:
+- Inside psql:
 ```sql
 \l         -- List databases
 \du        -- List users
 ```
 
-Take DB backup (from local):
+- Take DB backup from local:
 ```bash
-pg_dump -U amitmanna -d amkr-studio -f ~/Desktop/amkr-studio.sql
+pg_dump -U dbuser -d amkrstudio -f ~/Downloads/amkrstudio.sql
 ```
 
-Copy dump to pod:
+- Copy dump to pod:
 ```bash
-kubectl cp ~/Desktop/amkr-studio.sql <pg-pod>:/tmp/amkr-studio.sql
-```
-
----
-
-## 🔐 Utility Commands
-
-### Base64 Encode/Decode
-
-```bash
-echo -n "test@1234" | base64          # Encode
-```
-```bash
-echo "dGVzdEAxMjM0" | base64 --decode # Decode
+kubectl cp ~/Downloads/amkrstudio.sql podname:/tmp/amkrstudio.sql
 ```
 
 ---
 
-## 🧰 Git Commands
+### 🔐 Utility Commands ###
 
-### Manage Remote URLs
+### Base64 Encode/Decode ###
+
+- Encode Base64:
+```bash
+echo -n "test@1234" | base64
+```
+
+- Decode Base64:
+```bash
+echo "dGVzdEAxMjM0" | base64 --decode
+```
+
+---
+
+### 🧰 Git Commands ###
+
+### Manage Remote URLs ###
 
 - View existing remotes:
 ```bash
@@ -146,7 +117,7 @@ git push -u origin master
 
 ---
 
-## ✅ Best Practices
+### ✅ Best Practices ###
 
 - ✅ Use `--no-cache-dir` in all `pip install`
 - ✅ Keep Docker base image minimal (Python + ffmpeg only)

@@ -20,6 +20,4 @@ tests/
 .DS_Store
 LICENSE
 README.md
-requirements.txt
-Dockerfile
-Dockerfile.base
+DEVELOPER_GUIDE.md

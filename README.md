@@ -1,10 +1,10 @@
-# 🧾 AMKR Studio API
+### 🧾 AMKR Studio API ###
 
 AMKR Studio is a Django-based backend service providing utilities for budgeting, media downloading, and AI tools, built with modern authentication and deployment standards.
 
 ---
 
-## 🚀 Features
+### 🚀 Features ###
 
 - 🔊 Text-to-speech conversion
 - 📥 YouTube video & Shorts downloader
@@ -16,7 +16,7 @@ AMKR Studio is a Django-based backend service providing utilities for budgeting,
 
 ---
 
-## 🐍 Python Version
+### 🐍 Python Version ###
 
 - Python: `3.12.10`
 - Pip: `25.0.1`
@@ -25,7 +25,7 @@ AMKR Studio is a Django-based backend service providing utilities for budgeting,
 
 ---
 
-## 📁 Naming Convention
+### 📁 Naming Convention ###
 
 | Type        | Convention |
 |-------------|------------|
@@ -34,65 +34,59 @@ AMKR Studio is a Django-based backend service providing utilities for budgeting,
 
 ---
 
-## 🛠️ Development Setup
+### 🛠️ Development Setup ###
 
+- Clone the repo:
 ```bash
-# Clone the repo
 git clone https://github.com/amitkrishnadev/amkr-studio-api.git && cd amkr-studio-api
+```
 
-# Create virtual environment
+- Create virtual environment:
+```bash
 python3 -m venv venv && source venv/bin/activate
+```
 
-# Install requirements
+- Install requirements:
+```bash
 pip install --no-cache-dir -r requirements.txt
+```
 
-# Run server
+- Run server:
+```bash
 python manage.py runserver
 ```
 
 ---
 
-## 📦 Docker Versions
+### 🐳 Docker Versions ###
 
-```bash
-# Python Base Image
-python:3.12.10-slim
-
-# Pip Version
-pip 25.0.1
-
-# ffmpeg Version
-ffmpeg 7.1.1
-
-# PostgreSQL Version
-PostgreSQL 16
-```
+- Python Base Image: `python:3.12-alpine`
 
 ---
 
-## ✍️ Credits
+### ✍️ Credits ###
 
-- 👨‍💻 Amit M
-- 🌸 Kṛṣṇa R
+- 🧑🏻‍💻 Amit Manna
+- 🙏🏻 The Supreme Lord Kṛṣṇa
 
 ---
 
-## 📚 References
+### 📚 References ###
 
 - https://xlsxwriter.readthedocs.io/example_chart_combined.html
 - https://xlsxwriter.readthedocs.io/chart_examples.html#chart-examples
 
 ---
 
-## 📋 Tasks (In Progress)
+### 📋 Tasks [In Progress] ###
 
 - [x] JWT-based authentication
-- [x] Google OAuth integration
+- [ ] Google OAuth integration
 - [x] YouTube downloader (video & shorts)
 - [x] Video splitter API
 - [x] Text-to-speech (multi-language)
 - [ ] Admin panel for user data management
 - [ ] Group-based permissions
-- [ ] Media cleanup & storage rotation
+- [x] Media cleanup & storage rotation
 
 ---
